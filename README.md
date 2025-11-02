@@ -1,89 +1,158 @@
-# Histogram-of-an-images
-## Aim
-To obtain a histogram for finding the frequency of pixels in an Image with pixel values ranging from 0 to 255. Also write the code using OpenCV to perform histogram equalization.
+# Implementation-of-filter
+## Aim:
+To implement filters for smoothing and sharpening the images in the spatial domain.
 
 ## Software Required:
 Anaconda - Python 3.7
 
 ## Algorithm:
-### Step1:
-Read the gray and color image using imread()
+### Step1
+Import the required libraries.
 
-### Step2:
-Print the image using imshow().
+### Step2
+Convert the image from BGR to RGB.
 
+### Step3
+Apply the required filters for the image separately.
 
+### Step4
+Plot the original and filtered image by using matplotlib.pyplot.
 
-### Step3:
-Use calcHist() function to mark the image in graph frequency for gray and color image.
-
-### step4:
-Use calcHist() function to mark the image in graph frequency for gray and color image.
-
-### Step5:
-The Histogram of gray scale image and color image is shown.
-
+### Step5
+End the program.
 
 ## Program:
-```python
-# Developed By: R Anirudh
-# Register Number: 212223230016
+### Developed By : R Anirudh
+### Register Number : 212223230016
 
+### 1. Smoothing Filters
+
+i) Using Averaging Filter
+```Python
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
-
-img = cv2.imread('parrot.jpg',cv2.IMREAD_GRAYSCALE)
-
-plt.imshow(img, cmap='gray')
+import numpy as np
+image1=cv2.imread("cat1.jpg")
+image2=cv2.cvtColor(image1,cv2.COLOR_BGR2RGB)
+kernel=np.ones((11,11),np.float32)/169
+image3=cv2.filter2D(image2,-1,kernel)
+plt.figure(figsize=(9,9))
+plt.subplot(1,2,1)
+plt.imshow(image2)
 plt.title("Original Image")
+plt.axis("off")
+plt.subplot(1,2,2)
+plt.imshow(image3)
+plt.title("Average Filter Image")
+plt.axis("off")
 plt.show()
 
-plt.hist(img.ravel(),256,range=[0,256])
-plt.title("Original Image")
-plt.show()
-
-img_eq=cv2.equalizeHist(img)
-
-plt.hist(img_eq.ravel(),256,range=[0,256]);
-plt.title('Equalized Histogram')
-
-plt.imshow(img_eq, cmap='gray')
-plt.title("Original Image")
-plt.show()
-
-img = cv2.imread('parrot.jpg',cv2.IMREAD_COLOR)
-img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-img_hsv[:,:,2] = cv2.equalizeHist(img_hsv[:,:,2])
-img_eq = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
-
-plt.figure(figsize=(10,12))
-plt.subplot(121) ; plt.imshow(img[: , : ,::-1]); plt.title('Original Color Image')
-plt.subplot(122) ; plt.imshow(img_eq[: , : ,::-1]); plt.title('Equalized Image')
-plt.subplot(321) ; plt.hist(img.ravel(),256,range =[0,256]);plt.title('Original Image')
-plt.subplot(322) ; plt.hist(img_eq.ravel(),256,range =[0,256]);plt.title('Histogram Equalized Image')
 ```
-## Output:
+ii) Using Weighted Averaging Filter
+```Python
+kernel1=np.array([[1,2,1],[2,4,2],[1,2,1]])/16
+image2=cv2.cvtColor(image1,cv2.COLOR_BGR2RGB)
+image3=cv2.filter2D(image2,-1,kernel1)
+plt.subplot(1,2,1)
+plt.imshow(image2)
+plt.title("Original Image")
+plt.axis("off")
+plt.subplot(1,2,2)
+plt.imshow(image3)
+plt.title("Weighted Average Filter Image")
+plt.axis("off")
+plt.show()
 
-### Original Image:
+```
+iii) Using Gaussian Filter
+```Python
+gaussian_blur=cv2.GaussianBlur(image2,(33,33),0,0)
+plt.subplot(1,2,1)
+plt.imshow(image2)
+plt.title("Original Image")
+plt.axis("off")
+plt.subplot(1,2,2)
+plt.imshow(gaussian_blur)
+plt.title("Gaussian Blur")
+plt.axis("off")
+plt.show()
 
-![download](https://github.com/user-attachments/assets/e81836f2-2211-4c24-8dfc-356aed85df26)
+```
+iv)Using Median Filter
+```Python
+median=cv2.medianBlur(image2,13)
+plt.figure(figsize=(9,9))
+plt.subplot(1,2,1)
+plt.imshow(image2)
+plt.title("Original Image")
+plt.axis("off")
+plt.subplot(1,2,2)
+plt.imshow(median)
+plt.title("Median Blur")
+plt.axis("off")
+plt.show()
 
-### Histogram of Original Image:
+```
 
-![download](https://github.com/user-attachments/assets/f44d4151-7b91-47cc-abaf-12774e55ad25)
+### 2. Sharpening Filters
+i) Using Laplacian Linear Kernal
+```Python
+kernel2=np.array([[-1,-1,-1],[2,-2,1],[2,1,-1]])
+image3=cv2.filter2D(image2,-1,kernel2)
+plt.subplot(1,2,1)
+plt.imshow(image2)
+plt.title("Original Image")
+plt.axis("off")
+plt.subplot(1,2,2)
+plt.imshow(image3)
+plt.title("Laplacian Kernel")
+plt.axis("off")
+plt.show()
 
-### Histogram Equalization of Original Image:
+```
+ii) Using Laplacian Operator
+```Python
+laplacian=cv2.Laplacian(image2,cv2.CV_64F)
+plt.subplot(1,2,1)
+plt.imshow(image2)
+plt.title("Original Image")
+plt.axis("off")
+plt.subplot(1,2,2)
+plt.imshow(laplacian)
+plt.title("Laplacian Operator")
+plt.axis("off")
+plt.show()
 
-![download](https://github.com/user-attachments/assets/cb6c85ae-6e7e-4e82-8d1a-b08bf03d33c6)
+```
 
-## Original Gray Image :
+## OUTPUT:
+### 1. Smoothing Filters
 
-![download](https://github.com/user-attachments/assets/06032e40-0384-4830-9f3f-78a2cdd97357)
+i) Using Averaging Filter
 
-## Histogram Equalized Image :
+![image](https://github.com/user-attachments/assets/2d0274cc-a345-4e13-9191-80df87b58c27)
 
-![download](https://github.com/user-attachments/assets/bc1e9dc1-299d-495a-a401-7fa8360d70ac)
+ii)Using Weighted Averaging Filter
 
-## Result: 
-Thus the histogram for finding the frequency of pixels in an image with pixel values ranging from 0 to 255 is obtained. Also,histogram equalization is done for the gray scale image using OpenCV.
+![image](https://github.com/user-attachments/assets/92a6381e-3633-4fc4-9e19-95ecb5a10408)
+
+iii)Using Gaussian Filter
+
+![image](https://github.com/user-attachments/assets/58153cf6-0cd6-4635-86f4-c8be092e5bbb)
+
+iv) Using Median Filter
+
+![image](https://github.com/user-attachments/assets/7184e2e6-8d25-4c14-85ce-3651d378d853)
+
+### 2. Sharpening Filters
+
+i) Using Laplacian Kernal
+
+![image](https://github.com/user-attachments/assets/5b660aa3-4390-48eb-885f-1b2822a61418)
+
+ii) Using Laplacian Operator
+
+![image](https://github.com/user-attachments/assets/fc210d9c-1b6c-4ae8-b5fa-76a8e7ecdcb2)
+
+## Result:
+Thus the filters are designed for smoothing and sharpening the images in the spatial domain.
